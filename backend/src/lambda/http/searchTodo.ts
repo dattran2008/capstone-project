@@ -5,11 +5,11 @@ import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
 import { searchToDoItem } from '../../helpers/todos'
 import { getUserId } from '../utils'
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
+import { SearchTodoRequest } from '../../requests/SearchTodoRequest'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const { name }: CreateTodoRequest = JSON.parse(event.body)
+    const { name }: SearchTodoRequest = JSON.parse(event.body)
     const userId = getUserId(event)
     const todos = await searchToDoItem(userId, name)
 

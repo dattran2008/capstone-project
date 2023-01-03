@@ -69,7 +69,7 @@ export async function searchTodo(
   todoItem: SearchTodoRequest
 ): Promise<Todo> {
   const response = await Axios.post(
-    `${apiEndpoint}/todos`,
+    `${apiEndpoint}/todos/search`,
     JSON.stringify(todoItem),
     {
       headers: {

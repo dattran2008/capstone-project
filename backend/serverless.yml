@@ -1,7 +1,6 @@
-# TODO: Change the name of the org 
 org: dattran2008
-app: project-todo-app
-service: project-todo-app
+app: serverless-udatodo
+service: serverless-udatodo
 
 plugins:
   - serverless-webpack
@@ -14,17 +13,18 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-  stage: ${opt:stage, 'production'}
+  stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
   tracing:
     lambda: true
     apiGateway: true
 
+
   environment:
-    TODOS_TABLE: dattt-${self:provider.stage}
+    TODOS_TABLE: udatodo-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: dattt-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: udatodo-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   logs:
@@ -157,17 +157,14 @@ functions:
     events:
       - http:
           method: post
-          path: todos
+          path: todos/search
           cors: true
           authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: [
-          "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}",
-          "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/*"
-        ]
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
