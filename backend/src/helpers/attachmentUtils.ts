@@ -7,7 +7,6 @@ const XAWS = AWSXRay.captureAWS(AWS)
 
 const logger = createLogger('File storage log')
 
-// TODO: Implement the fileStogare logic
 export class AttachmentUtils {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),

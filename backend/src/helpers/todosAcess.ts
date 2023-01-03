@@ -98,6 +98,25 @@ export class TodosAccess {
       )
       .promise()
   }
+
+  async searchToDoItem(userId: string, todoName: string): Promise<TodoItem[]> {
+    logger.info('Search todo item: ')
+
+    const result = await this.docClient
+      .query({
+        TableName: this.todosTable,
+        IndexName: this.todoCreatedIndex,
+        KeyConditionExpression: 'userId = :pk and name = :name',
+        ExpressionAttributeValues: {
+          ':pk': userId,
+          ':name': todoName
+        }
+      })
+      .promise()
+
+    const items = result.Items
+    return items as TodoItem[]
+  }
 }
 
 function createDynamoDBClient() {

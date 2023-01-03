@@ -9,7 +9,6 @@ import { createTodo } from '../../helpers/todos'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const newTodo: CreateTodoRequest = JSON.parse(event.body)
-    // TODO: Implement creating a new TODO item
     let userId = getUserId(event)
     const { todoId, name, dueDate, createdAt, done } = await createTodo(
       userId,

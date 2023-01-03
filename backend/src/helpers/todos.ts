@@ -8,7 +8,6 @@ import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
 import * as AWS from 'aws-sdk'
 
-// TODO: Implement businessLogic
 const logger = createLogger('Todos business logic log')
 
 const s3 = new AWS.S3({
@@ -18,7 +17,6 @@ const s3 = new AWS.S3({
 const bucketName = process.env.ATTACHMENT_S3_BUCKET
 const urlExpiration = process.env.SIGNED_URL_EXPIRATION
 
-// TODO: Implement businessLogic
 const todoAccess = new TodosAccess()
 const attachmentUtils = new AttachmentUtils()
 export async function getAllToDo(userId: string): Promise<TodoItem[]> {
@@ -75,4 +73,11 @@ function getUploadUrl(imageId: string) {
     Key: imageId,
     Expires: Number(urlExpiration)
   })
+}
+
+export async function searchToDoItem(
+  userId: string,
+  todoName: string
+): Promise<TodoItem[]> {
+  return todoAccess.searchToDoItem(userId, todoName)
 }

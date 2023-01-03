@@ -2,27 +2,27 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
-import { cors, httpErrorHandler } from 'middy/middlewares'
-
-import { createAttachmentPresignedUrl } from '../../helpers/todos'
+import { cors } from 'middy/middlewares'
+import { searchToDoItem } from '../../helpers/todos'
 import { getUserId } from '../utils'
+import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const todoId = event.pathParameters.todoId
-    let userId = getUserId(event)
-    const url = await createAttachmentPresignedUrl(todoId, userId)
+    const { name }: CreateTodoRequest = JSON.parse(event.body)
+    const userId = getUserId(event)
+    const todos = await searchToDoItem(userId, name)
 
     return {
-      statusCode: 201,
+      statusCode: 200,
       body: JSON.stringify({
-        uploadUrl: url
+        items: todos
       })
     }
   }
 )
 
-handler.use(httpErrorHandler()).use(
+handler.use(
   cors({
     credentials: true
   })
