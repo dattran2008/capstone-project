@@ -22,9 +22,9 @@ provider:
     apiGateway: true
 
   environment:
-    TODOS_TABLE: udatodo-${self:provider.stage}
+    TODOS_TABLE: todo-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: udatodo-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: todo-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   logs:
@@ -156,7 +156,7 @@ functions:
     handler: src/lambda/http/searchTodo.handler
     events:
       - http:
-          method: get
+          method: post
           path: todos
           cors: true
           authorizer: Auth

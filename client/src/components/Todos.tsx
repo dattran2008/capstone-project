@@ -14,7 +14,13 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import {
+  createTodo,
+  deleteTodo,
+  getTodos,
+  patchTodo,
+  searchTodo
+} from '../api/todos-api'
 import Auth from '../auth/Auth'
 import { Todo } from '../types/Todo'
 
@@ -27,17 +33,23 @@ interface TodosState {
   todos: Todo[]
   newTodoName: string
   loadingTodos: boolean
+  todoItem: string
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingTodos: true,
+    todoItem: ''
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
+  }
+
+  handleItemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ todoItem: event.target.value })
   }
 
   onEditButtonClick = (todoId: string) => {
@@ -64,7 +76,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     try {
       await deleteTodo(this.props.auth.getIdToken(), todoId)
       this.setState({
-        todos: this.state.todos.filter(todo => todo.todoId !== todoId)
+        todos: this.state.todos.filter((todo) => todo.todoId !== todoId)
       })
     } catch {
       alert('Todo deletion failed')
@@ -89,6 +101,20 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     }
   }
 
+  onTodoSearch = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+    try {
+      const todoItem = await searchTodo(this.props.auth.getIdToken(), {
+        name: this.state.todoItem
+      })
+      this.setState({
+        todos: [todoItem],
+        todoItem: ''
+      })
+    } catch {
+      alert('Todo search failed')
+    }
+  }
+
   async componentDidMount() {
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
@@ -104,7 +130,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   render() {
     return (
       <div>
-        <Header as="h1">TODOs</Header>
+        <Header as="h1">TODOs App</Header>
 
         {this.renderCreateTodoInput()}
 
@@ -127,8 +153,22 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Enter your new name here...."
             onChange={this.handleNameChange}
+          />
+          <Divider />
+          <Input
+            action={{
+              color: 'red',
+              labelPosition: 'left',
+              icon: 'search',
+              content: 'Search',
+              onClick: this.onTodoSearch
+            }}
+            fluid
+            actionPosition="left"
+            placeholder="Type your item search here: "
+            onChange={this.handleItemChange}
           />
         </Grid.Column>
         <Grid.Column width={16}>
