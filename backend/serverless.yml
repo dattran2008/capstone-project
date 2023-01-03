@@ -1,6 +1,6 @@
 org: dattran2008
-app: serverless-udatodo
-service: serverless-udatodo
+app: serverless-todo
+service: serverless-todo
 
 plugins:
   - serverless-webpack
@@ -22,9 +22,9 @@ provider:
 
 
   environment:
-    TODOS_TABLE: udatodo-${self:provider.stage}
+    TODOS_TABLE: todo-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: udatodo-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: todo-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   logs:
@@ -164,6 +164,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
+          - dynamodb:GetItem
         Resource: [
           "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}",
           "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/*"

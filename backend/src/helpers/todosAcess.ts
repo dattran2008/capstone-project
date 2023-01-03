@@ -106,7 +106,7 @@ export class TodosAccess {
       .query({
         TableName: this.todosTable,
         IndexName: this.todoCreatedIndex,
-        KeyConditionExpression: 'userId = :pk and name = :name',
+        KeyConditionExpression: 'userId = :pk AND name = :name',
         ExpressionAttributeValues: {
           ':pk': userId,
           ':name': todoName
