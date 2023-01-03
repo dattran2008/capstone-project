@@ -1,6 +1,6 @@
 org: dattran2008
-app: serverless-todo
-service: serverless-todo
+app: serverless-mytodo
+service: serverless-mytodo
 
 plugins:
   - serverless-webpack
@@ -22,9 +22,9 @@ provider:
 
 
   environment:
-    TODOS_TABLE: todo-${self:provider.stage}
+    TODOS_TABLE: mytodo-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: todo-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: mytodo-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   logs:
