@@ -103,9 +103,14 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoSearch = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      const todoItem = await searchTodo(this.props.auth.getIdToken(), {
-        name: this.state.todoItem
-      })
+      const todo = this.state.todos
+      const todoItem = await searchTodo(
+        this.props.auth.getIdToken(),
+        {
+          name: this.state.todoItem
+        },
+        todo[0].todoId
+      )
       this.setState({
         todos: [todoItem],
         todoItem: ''

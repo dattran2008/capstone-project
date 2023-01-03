@@ -172,7 +172,7 @@ functions:
     events:
       - http:
           method: post
-          path: todos/search
+          path: todos/search/{todoId}
           cors: true
     iamRoleStatements:
       - Effect: Allow

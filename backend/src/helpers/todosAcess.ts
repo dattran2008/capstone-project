@@ -99,16 +99,19 @@ export class TodosAccess {
       .promise()
   }
 
-  async searchToDoItem(userId: string, todoName: string): Promise<TodoItem[]> {
+  async searchToDoItem(todoName: string, todoId: string): Promise<TodoItem[]> {
     logger.info('Search todo item: ')
 
     const result = await this.docClient
       .query({
         TableName: this.todosTable,
-        KeyConditionExpression: 'userId = :pk AND name = :item',
+        KeyConditionExpression: '#todo_name = :item OR todoId = :itemId',
+        ExpressionAttributeNames: {
+          '#todo_name': 'name'
+        },
         ExpressionAttributeValues: {
-          ':pk': userId,
-          ':item': todoName
+          ':item': todoName,
+          ':itemId': todoId
         }
       })
       .promise()

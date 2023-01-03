@@ -66,10 +66,11 @@ export async function deleteTodo(
 
 export async function searchTodo(
   idToken: string,
-  todoItem: SearchTodoRequest
+  todoItem: SearchTodoRequest,
+  todoId: string
 ): Promise<Todo> {
   const response = await Axios.post(
-    `${apiEndpoint}/todos/search`,
+    `${apiEndpoint}/todos/search/${todoId}`,
     JSON.stringify(todoItem),
     {
       headers: {
