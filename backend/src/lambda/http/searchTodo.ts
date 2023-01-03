@@ -9,9 +9,9 @@ import { SearchTodoRequest } from '../../requests/SearchTodoRequest'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const { name }: SearchTodoRequest = JSON.parse(event.body)
+    const todoItem: SearchTodoRequest = JSON.parse(event.body)
     const userId = getUserId(event)
-    const todos = await searchToDoItem(userId, name)
+    const todos = await searchToDoItem(userId, todoItem.name)
 
     return {
       statusCode: 200,

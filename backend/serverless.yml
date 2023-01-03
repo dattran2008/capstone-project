@@ -166,6 +166,7 @@ functions:
           - dynamodb:UpdateItem
         Resource: !GetAtt TodosTable.Arn
 
+  # SearchTODO: Search function
   SearchTodo:
     handler: src/lambda/http/searchTodo.handler
     events:
@@ -173,13 +174,12 @@ functions:
           method: post
           path: todos/search
           cors: true
-          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
           - dynamodb:GetItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: !GetAtt TodosTable.Arn
 
 resources:
   Resources:
