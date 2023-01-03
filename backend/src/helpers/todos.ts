@@ -77,7 +77,8 @@ function getUploadUrl(imageId: string) {
 
 export async function searchToDoItem(
   todoName: string,
-  todoId: string
+  todoId: string,
+  userId: string
 ): Promise<TodoItem[]> {
-  return todoAccess.searchToDoItem(todoName, todoId)
+  return todoAccess.searchToDoItem(todoName, todoId, userId)
 }
